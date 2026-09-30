@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Strength Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <h1 class="card-title text-center mb-4">
+                    🔐 Password Strength Analyzer
+                </h1>
+                <form method="POST" class="d-flex justify-content-center mb-4">
+                    <input type="text" name="password" class="form-control w-50 me-2" placeholder="Enter password">
+                    <button type="submit" class="btn btn-primary">Analyze</button>
+                </form>
+
+                {% if result %}
+                <div class="mt-4">
+                    <h4>Strength: <span class="badge bg-info">{{ result }}</span></h4>
+                    <p><strong>Entropy:</strong> {{ entropy }} bits</p>
+
+                    <!-- Progress bar -->
+                    <div class="progress mb-3">
+                        <div class="progress-bar 
+                            {% if result == 'Weak' %} bg-danger {% elif result == 'Medium' %} bg-warning {% else %} bg-success {% endif %}" 
+                            role="progressbar" 
+                            style="width: {% if result == 'Weak' %} 30 {% elif result == 'Medium' %} 60 {% else %} 100 {% endif %}%;">
+                            {{ result }}
+                        </div>
+                    </div>
+
+                    <!-- Suggestions -->
+                    <h5>Suggestions:</h5>
+                    {% for s in suggestions %}
+                        <div class="alert alert-info">{{ s }}</div>
+                    {% endfor %}
+
+                    <!-- Generated password -->
+                    <div class="alert alert-success mt-3">
+                        <strong>Suggested Strong Password:</strong> <code>{{ generated }}</code>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
